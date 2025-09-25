@@ -23,6 +23,11 @@
           if system == "aarch64-darwin"
           then "arm64-v8a"
           else "x86_64";
+        homedir = builtins.getEnv "HOME";
+        state-home =
+          if pkgs.lib.last (pkgs.lib.splitString "-" system) == "darwin"
+          then "${homedir}/." # ~/.android
+          else "${pkgs.config.xdg.stateHome}/";
 
         pkgs = import nixpkgs {
           inherit system;
@@ -75,7 +80,7 @@
               JAVA_HOME = pinnedJDK;
               ANDROID_HOME = "${androidSdk}/share/android-sdk";
               ANDROID_SDK_ROOT = "${androidSdk}/share/android-sdk";
-              ANDROID_USER_HOME = "${config.xdg.stateHome}/android";
+              ANDROID_USER_HOME = "${state-home}android"; # has leading '/' sorted out already
               ANDROID_AVD_HOME = "${ANDROID_USER_HOME}/avd";
 
               GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_SDK_ROOT}/build-tools/35.0.0/aapt2";
