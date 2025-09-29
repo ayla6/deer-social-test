@@ -190,7 +190,7 @@ export function resetImageManipulation(
 
 export async function compressImage(
   img: ComposerImage,
-  webp: boolean = true,
+  webp: boolean = false,
 ): Promise<PickerImage> {
   const source = img.transformed || img.source
   const originalSize = getDataUriSize(img.source.path)
