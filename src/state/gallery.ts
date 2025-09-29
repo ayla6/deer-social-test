@@ -194,6 +194,7 @@ export async function compressImage(
 ): Promise<PickerImage> {
   const source = img.transformed || img.source
   const originalSize = getDataUriSize(img.source.path)
+  const ogSizeLimit = originalSize * (webp ? 1 : 1.25)
 
   const [w, h] = containImageRes(source.width, source.height, POST_IMG_MAX)
 
@@ -229,7 +230,7 @@ export async function compressImage(
 
     const size = 'size' in res ? res.size : getDataUriSize(res.base64!)
 
-    if (size <= POST_IMG_MAX.size && size <= originalSize) {
+    if (size <= POST_IMG_MAX.size && size <= ogSizeLimit) {
       newDataUri = {
         path: await moveIfNecessary(res.uri),
         width: w,
