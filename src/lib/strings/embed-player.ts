@@ -458,10 +458,7 @@ export function parseEmbedPlayerFromUrl(
   if (urlp.hostname === 'stream.place') {
     const [_, page] = urlp.pathname.split('/')
 
-    if (
-      (page === 'Stream' && (urlp.searchParams.get('user') as string)) ||
-      page.includes('.')
-    ) {
+    if (page.includes('.')) {
       return {
         type: 'streamplace_video',
         source: 'streamplace',

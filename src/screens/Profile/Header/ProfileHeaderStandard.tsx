@@ -11,7 +11,6 @@ import {useLingui} from '@lingui/react'
 
 import {useActorStatus} from '#/lib/actor-status'
 import {sanitizeDisplayName} from '#/lib/strings/display-names'
-import {sanitizeHandle} from '#/lib/strings/handles'
 import {formatJoinDate} from '#/lib/strings/time'
 import {
   sanitizeWebsiteForDisplay,
@@ -27,7 +26,7 @@ import {
 import {useRequireAuth, useSession} from '#/state/session'
 import {ProfileMenu} from '#/view/com/profile/ProfileMenu'
 import * as Toast from '#/view/com/util/Toast'
-import {atoms as a, platform, tokens, useBreakpoints, useTheme} from '#/alf'
+import {atoms as a, tokens, useTheme} from '#/alf'
 import {SubscribeProfileButton} from '#/components/activity-notifications/SubscribeProfileButton'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {useDialogControl} from '#/components/Dialog'
@@ -43,7 +42,7 @@ import {Link} from '#/components/Link'
 import * as Prompt from '#/components/Prompt'
 import {RichText} from '#/components/RichText'
 import {Text} from '#/components/Typography'
-import {VerificationCheckButton} from '#/components/verification/VerificationCheckButton'
+import {ProfileHeaderDisplayName} from './DisplayName'
 import {EditProfileDialog} from './EditProfileDialog'
 import {ProfileHeaderHandle} from './Handle'
 import {ProfileHeaderMetrics} from './Metrics'
@@ -66,7 +65,6 @@ let ProfileHeaderStandard = ({
   isPlaceholderProfile,
 }: Props): React.ReactNode => {
   const t = useTheme()
-  const {gtMobile} = useBreakpoints()
   const profile =
     useProfileShadow<AppBskyActorDefs.ProfileViewDetailed>(profileUnshadowed)
   const {currentAccount, hasSession} = useSession()
@@ -278,33 +276,11 @@ let ProfileHeaderStandard = ({
             <ProfileMenu profile={profile} />
           </View>
           <View
-            style={[a.flex_col, a.gap_xs, a.pb_sm, live ? a.pt_sm : a.pt_2xs]}>
-            <View style={[a.flex_row, a.align_center, a.gap_xs, a.flex_1]}>
-              <Text
-                emoji
-                testID="profileHeaderDisplayName"
-                style={[
-                  t.atoms.text,
-                  gtMobile ? a.text_4xl : a.text_3xl,
-                  a.self_start,
-                  a.font_bold,
-                  a.leading_tight,
-                ]}>
-                {sanitizeDisplayName(
-                  profile.displayName || sanitizeHandle(profile.handle),
-                  moderation.ui('displayName'),
-                )}
-                <View
-                  style={[
-                    a.pl_xs,
-                    {
-                      marginTop: platform({ios: 2}),
-                    },
-                  ]}>
-                  <VerificationCheckButton profile={profile} size="lg" />
-                </View>
-              </Text>
-            </View>
+            style={[a.flex_col, a.gap_2xs, a.pb_md, live ? a.pt_sm : a.pt_2xs]}>
+            <ProfileHeaderDisplayName
+              profile={profile}
+              moderation={moderation}
+            />
             <ProfileHeaderHandle profile={profile} />
           </View>
           {!isPlaceholderProfile && !isBlockedUser && (

@@ -36,6 +36,7 @@ module.exports = {
           'Admonition.Admonition',
           'Toast.Action',
           'Span',
+          'StackedButton',
         ],
         impliedTextProps: [],
         suggestedTextWrappers: {

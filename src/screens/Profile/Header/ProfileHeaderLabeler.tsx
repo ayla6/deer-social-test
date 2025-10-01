@@ -14,6 +14,11 @@ import {useLingui} from '@lingui/react'
 import {MAX_LABELERS} from '#/lib/constants'
 import {useHaptics} from '#/lib/haptics'
 import {isAppLabeler} from '#/lib/moderation'
+import {formatJoinDate} from '#/lib/strings/time'
+import {
+  sanitizeWebsiteForDisplay,
+  sanitizeWebsiteForLink,
+} from '#/lib/strings/website'
 import {logger} from '#/logger'
 import {isIOS} from '#/platform/detection'
 import {useProfileShadow} from '#/state/cache/profile-shadow'
@@ -27,6 +32,8 @@ import * as Toast from '#/view/com/util/Toast'
 import {atoms as a, tokens, useTheme} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {type DialogOuterProps, useDialogControl} from '#/components/Dialog'
+import {CalendarDays_Stroke2_Corner0_Rounded as CalendarDays} from '#/components/icons/CalendarDays'
+import {Globe_Stroke2_Corner0_Rounded as Globe} from '#/components/icons/Globe'
 import {
   Heart2_Filled_Stroke2_Corner0_Rounded as HeartFilled,
   Heart2_Stroke2_Corner0_Rounded as Heart,
@@ -67,6 +74,14 @@ let ProfileHeaderLabeler = ({
   const playHaptic = useHaptics()
   const cantSubscribePrompt = Prompt.usePromptControl()
   const isSelf = currentAccount?.did === profile.did
+
+  const website = profile.website
+  const websiteFormatted = sanitizeWebsiteForDisplay(website ?? '')
+
+  const dateJoined = useMemo(() => {
+    if (!profile.createdAt) return ''
+    return formatJoinDate(profile.createdAt)
+  }, [profile.createdAt])
 
   const moderation = useMemo(
     () => moderateProfile(profile, moderationOpts),
@@ -170,7 +185,7 @@ let ProfileHeaderLabeler = ({
         style={[a.px_lg, a.pt_md, a.pb_sm]}
         pointerEvents={isIOS ? 'auto' : 'box-none'}>
         <View
-          style={[a.flex_row, a.justify_end, a.align_center, a.gap_xs, a.pb_lg]}
+          style={[a.flex_row, a.justify_end, a.align_center, a.gap_xs, a.pb_sm]}
           pointerEvents={isIOS ? 'auto' : 'box-none'}>
           {isMe ? (
             <>
@@ -261,6 +276,33 @@ let ProfileHeaderLabeler = ({
                 />
               </View>
             ) : undefined}
+            {
+              <View style={[a.flex_row, a.flex_wrap, {gap: 10}, a.pt_md]}>
+                {websiteFormatted && (
+                  <Link
+                    to={sanitizeWebsiteForLink(websiteFormatted)}
+                    label={_(msg({message: `Visit ${websiteFormatted}`}))}
+                    style={[a.flex_row, a.align_center, a.gap_xs]}>
+                    <Globe
+                      width={tokens.space.lg}
+                      style={{color: t.palette.primary_500}}
+                    />
+                    <Text style={[{color: t.palette.primary_500}]}>
+                      {websiteFormatted}
+                    </Text>
+                  </Link>
+                )}
+                <View style={[a.flex_row, a.align_center, a.gap_xs]}>
+                  <CalendarDays
+                    width={tokens.space.lg}
+                    style={{color: t.atoms.text_contrast_medium.color}}
+                  />
+                  <Text style={[t.atoms.text_contrast_medium]}>
+                    <Trans>Joined {dateJoined}</Trans>
+                  </Text>
+                </View>
+              </View>
+            }
             {!isAppLabeler(profile.did) && (
               <View style={[a.flex_row, a.gap_xs, a.align_center, a.pt_lg]}>
                 <Button
