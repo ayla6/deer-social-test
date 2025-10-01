@@ -19,6 +19,7 @@ import {getImageDim} from '#/lib/media/manip'
 import {openCropper} from '#/lib/media/picker'
 import {type PickerImage} from '#/lib/media/picker.shared'
 import {getDataUriSize} from '#/lib/media/util'
+import {isNative} from '#/platform/detection'
 
 export type ImageTransformation = {
   crop?: ActionCrop['crop']
@@ -55,7 +56,11 @@ export type ComposerImage =
 let _imageCacheDirectory: string
 
 function getImageCacheDirectory(): string | null {
-  return (_imageCacheDirectory ??= joinPath(cacheDirectory!, 'bsky-composer'))
+  if (isNative) {
+    return (_imageCacheDirectory ??= joinPath(cacheDirectory!, 'bsky-composer'))
+  }
+
+  return null
 }
 
 export async function createComposerImage(
@@ -116,6 +121,10 @@ export async function pasteImage(
 }
 
 export async function cropImage(img: ComposerImage): Promise<ComposerImage> {
+  if (!isNative) {
+    return img
+  }
+
   const source = img.source
 
   // @todo: we're always passing the original image here, does image-cropper
@@ -213,7 +222,7 @@ export async function compressImage(
 
     const format = webp
       ? SaveFormat.WEBP
-      : qualityPercentage
+      : qualityPercentage === 100
         ? SaveFormat.PNG
         : SaveFormat.JPEG
 
@@ -236,7 +245,7 @@ export async function compressImage(
         width: w,
         height: h,
         mime: `image/${format}`,
-        size: size,
+        size,
         quality: qualityPercentage,
       }
       break
@@ -272,7 +281,7 @@ export const manipulateWebp = async (
 }
 
 async function moveIfNecessary(from: string) {
-  const cacheDir = getImageCacheDirectory()
+  const cacheDir = isNative && getImageCacheDirectory()
 
   if (cacheDir && from.startsWith(cacheDir)) {
     const to = joinPath(cacheDir, nanoid(36))
@@ -300,7 +309,7 @@ async function getTemporaryImageFile() {
 
 /** Purge files that were created to accomodate image manipulation */
 export async function purgeTemporaryImageFiles() {
-  const cacheDir = getImageCacheDirectory()
+  const cacheDir = isNative && getImageCacheDirectory()
 
   if (cacheDir) {
     await deleteAsync(cacheDir, {idempotent: true})
