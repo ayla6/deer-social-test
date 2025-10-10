@@ -730,7 +730,12 @@ export function Explore({
                 <ModuleHeader.SearchButton
                   {...item.searchButton}
                   onPress={() =>
-                    focusSearchInput(item.searchButton?.tab || 'user')
+                    focusSearchInput(
+                      (item.searchButton?.tab || 'user') as
+                        | 'user'
+                        | 'profile'
+                        | 'feed',
+                    )
                   }
                 />
               )}
@@ -747,7 +752,12 @@ export function Explore({
                   <ModuleHeader.SearchButton
                     {...item.searchButton}
                     onPress={() =>
-                      focusSearchInput(item.searchButton?.tab || 'user')
+                      focusSearchInput(
+                        (item.searchButton?.tab || 'user') as
+                          | 'user'
+                          | 'profile'
+                          | 'feed',
+                      )
                     }
                   />
                 )}
