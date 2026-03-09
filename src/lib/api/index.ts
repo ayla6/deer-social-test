@@ -304,7 +304,7 @@ async function resolveMedia(
     const images: BetterImage[] = await Promise.all(
       imagesDraft.map(async (image, i) => {
         logger.debug(`Compressing image #${i}`)
-        const {path, width, height, mime, size, quality} =
+        const {path, width, height, mime, quality} =
           await compressImage(image)
         logger.debug(`Uploading image #${i}`)
         const res = await uploadBlob(agent, path, mime)
@@ -314,7 +314,6 @@ async function resolveMedia(
           aspectRatio: {width, height},
           mime: mime,
           quality,
-          size,
         }
       }),
     )

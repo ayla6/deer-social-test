@@ -56,7 +56,7 @@ export function ImageEmbed({
         (loadAsPngs
           ? (recordImage.size &&
               recordImage.quality === 100 &&
-              recordImage.size <= PNG_IMG_MAX_BYTE) ||
+              recordImage.image.size <= PNG_IMG_MAX_BYTE) ||
             (img.aspectRatio &&
               img.aspectRatio.width <= PNG_IMG_MAX_SIZE &&
               img.aspectRatio.height <= PNG_IMG_MAX_SIZE)
