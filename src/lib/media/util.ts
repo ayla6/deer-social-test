@@ -29,5 +29,5 @@ export function blobToDataUri(blob: Blob): Promise<string> {
 
 export function modifyImageFormat(uri: string, format: string) {
   const sliced = uri.slice(0, -4)
-  return sliced.at(-1) === '@' ? sliced + format : uri
+  return sliced.at(-1) === '@' ? sliced + format : `${uri}@${format}`
 }
