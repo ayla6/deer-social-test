@@ -54,7 +54,7 @@ export function ImageEmbed({
 
       const pngSized =
         (loadAsPngs
-          ? (recordImage.size &&
+          ? (recordImage.image.size &&
               recordImage.quality === 100 &&
               recordImage.image.size <= PNG_IMG_MAX_BYTE) ||
             (img.aspectRatio &&
@@ -70,7 +70,7 @@ export function ImageEmbed({
         pngSized ||
           (loadAsPngs &&
             recordImage.quality === 100 &&
-            recordImage.mime !== 'image/jpeg')
+            recordImage.image.mime !== 'image/jpeg')
           ? 'png'
           : fullsizeFormat,
       )

@@ -312,7 +312,6 @@ async function resolveMedia(
           image: res.data.blob,
           alt: image.alt,
           aspectRatio: {width, height},
-          mime: mime,
           quality,
         }
       }),

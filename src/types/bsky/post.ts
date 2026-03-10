@@ -158,7 +158,6 @@ export interface BetterImage {
   aspectRatio?: AppBskyEmbedDefs.AspectRatio
   mime?: string
   quality?: number
-  size?: number
 }
 
 export interface BetterImages {
