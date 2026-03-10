@@ -3339,7 +3339,7 @@ msgstr ""
 msgid "Expands or collapses post text"
 msgstr ""
 
-#: src/lib/api/index.ts:423
+#: src/lib/api/index.ts:422
 msgid "Expected uri to resolve to a record"
 msgstr ""
 
@@ -9649,8 +9649,8 @@ msgstr ""
 msgid "Uploading images..."
 msgstr ""
 
-#: src/lib/api/index.ts:373
-#: src/lib/api/index.ts:397
+#: src/lib/api/index.ts:372
+#: src/lib/api/index.ts:396
 msgid "Uploading link thumbnail..."
 msgstr ""
 
