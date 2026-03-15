@@ -8,5 +8,6 @@ export const IMAGE_FORMATS = [
   {label: 'GIF', value: 'gif'},
   {label: 'BMP', value: 'bmp'},
   {label: 'ICO', value: 'ico'},
+  {label: 'JPEG XL', value: 'jxl'},
   ...(isNative ? [{label: 'HEIC', value: 'heic'}] : []),
 ]

@@ -650,7 +650,7 @@ export function DeerSettingsScreen({}: Props) {
 
             <Toggle.Item
               name="load_as_pngs"
-              label={_(msg`Load both small and 100% quality images as Pngs instead of the
+              label={_(msg`Load both small and 100% quality images as PNGs instead of the
               set image format`)}
               value={loadAsPngs}
               onChange={value => setLoadAsPngs(value)}
