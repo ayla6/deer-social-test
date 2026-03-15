@@ -5013,7 +5013,7 @@ msgstr ""
 
 #: src/screens/Settings/DeerSettings.tsx:653
 msgid ""
-"Load both small and 100% quality images as Pngs instead of the\n"
+"Load both small and 100% quality images as PNGs instead of the\n"
 "set image format"
 msgstr ""
 
